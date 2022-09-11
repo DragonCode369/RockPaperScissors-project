@@ -1,7 +1,6 @@
 
 // Generate computer choice
 
-
 function getComputerChoice () {
 
     let r = "rock";
@@ -29,23 +28,23 @@ let playRound = (playerSelection, computerSelection) => {
     let niz = [r, p, s];
     let output = document.getElementById("output");
 
-    for ( let i=0; i < niz.length; i++ ) {
+    for (let i=0; i < niz.length; i++) {
 
-        if ( playerInput == niz[i].toLowerCase() && computerSelection == niz[i].toLowerCase()) {
+        if (playerInput == niz[i].toLowerCase() && computerSelection == niz[i].toLowerCase()) {
 
             output.innerHTML = "It's a tie";
             return 3;
         }
 
-        if ( playerInput === niz[0].toLowerCase() && computerSelection === niz[i].toLowerCase()) {
+        if (playerInput === niz[0].toLowerCase() && computerSelection === niz[i].toLowerCase()) {
 
-            if( computerSelection === niz[1].toLowerCase() ){
+            if(computerSelection === niz[1].toLowerCase()){
 
                 output.innerHTML = "You lose! " + p + " beats " + r;
                 return 0;
             }
 
-            if ( computerSelection === niz[2].toLowerCase() ) {
+            if (computerSelection === niz[2].toLowerCase()) {
 
                 output.innerHTML = "You winnnn! " + r + " beats " + s;
                 return 1;
@@ -53,31 +52,30 @@ let playRound = (playerSelection, computerSelection) => {
 
         }
 
-        if ( playerInput === niz[1].toLowerCase() && computerSelection === niz[i].toLowerCase() ) {
+        if (playerInput === niz[1].toLowerCase() && computerSelection === niz[i].toLowerCase()) {
 
-            if ( computerSelection === niz[0].toLowerCase() ) {
+            if (computerSelection === niz[0].toLowerCase()) {
 
                 output.innerHTML = "You win! " + p + " Beats " + r;
                 return 1;
             }
 
-            if ( computerSelection === niz[2].toLowerCase() ) { 
+            if (computerSelection === niz[2].toLowerCase()) { 
 
                 output.innerHTML = "You lose! " + s + " beat " + p;
                 return 0;
             }
-
         }
 
-        if ( playerInput === niz[2].toLowerCase() && computerSelection === niz[i].toLowerCase() ) {
+        if (playerInput === niz[2].toLowerCase() && computerSelection === niz[i].toLowerCase()) {
 
-            if ( computerSelection === niz[0].toLowerCase() ) {
+            if (computerSelection === niz[0].toLowerCase()) {
 
                 output.innerHTML = "You lose! " + r + " beats " + s;
                 return 0;
             }
 
-            if ( computerSelection === niz[1].toLowerCase() ) {
+            if (computerSelection === niz[1].toLowerCase()) {
 
                 output.innerHTML = "You win! " + s + " beats " + p;
                 return 1;
@@ -86,39 +84,62 @@ let playRound = (playerSelection, computerSelection) => {
     }
 } 
 
+// Play 5 round game, and return winner or loser at the end.
+
+let playerPoints = 0;
+let computerPoints = 0;
+let counter = 0;
+
 function game() {
 
-    const computerSelection = getComputerChoice();
-    let playerSelection = "SciSSors";
+    let playerSelection = document.getElementById("input").value;
 
-    let playerPoints = 0;
-    let computerPoints = 0;
+    for (let i = 0; i < 5; i++) {
 
-    let score = playRound(playerSelection, computerSelection);
+        let computerSelection = getComputerChoice();
+        let score = playRound(playerSelection, computerSelection);
 
-    for ( let i = 1; i < 5; i++ ) {
-
-        if ( score === 0 ) {
+        if (score === 0) {
 
             computerPoints++;
         }
 
-        else if ( score === 1 ) {
+        else if (score === 1) {
 
             playerPoints++;
+
+        }
+        else if (score === 3) {
+
         }
 
+        console.log("ROUND: " + i);
+        console.log("player Points\n" + playerPoints);
+        console.log("computer Points\n" + computerPoints);
+
+        counter++;
+
+        console.log("counter : " + counter);
+        console.log("----------------");
     }
         
-    console.log(playerPoints);
-    
-    if ( playerPoints > computerPoints ) {
+    if ( counter === 5 ) {
 
-        console.log("Victory");
+        if (playerPoints > computerPoints) {
+
+            console.log("Victory!");
+            console.log("Player points " + playerPoints);
+        }
+
+        else if(playerPoints < computerPoints) {
+
+            console.log("Defeat!");
+            console.log("Computer points " + computerPoints);
+        }
+
+        else if(playerPoints === computerPoints) {
+            console.log("It's a tie, try one more time :)")
+        }
     }
 
-    else if( playerPoints < computerPoints ) {
-
-        console.log("Defeat");
-    }
 }
