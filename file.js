@@ -56,7 +56,7 @@ function game(playerSelection) {
         });
 
         if (playerPoints > computerPoints) {
-            gameOutput.innerHTML = '<h1 class="final-output">Victory!</h1>\n Taking chances is woth it!\n Hint: You can influence the AI Choice ;]]';
+            gameOutput.innerHTML = '<h1 class="final-output">Victory!</h1>\n Taking chances is worth it!\n Hint: You can influence the AI Choice ;]]';
         }
 
         else if(playerPoints < computerPoints) {
