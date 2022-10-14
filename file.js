@@ -1,6 +1,123 @@
 
-// Generate computer choice
+const output = document.querySelector("#output");
+const roundOutput = document.querySelector(".round-output");
+const outputPlayerPoints = document.querySelector(".player-points");
+const outputComputerPoints = document.querySelector(".computer-points");
+const gameOutput = document.querySelector("#game-output");
+let oneGameOutput = document.querySelector("#one-game-output");
+let playerChoice = document.querySelectorAll(".player-buttons");
 
+let playerPoints = 0;
+let computerPoints = 0;
+let counter = 1;
+
+function game(playerSelection) {
+
+    let computerSelection = getComputerChoice();
+
+    let score = playRound(playerSelection, computerSelection);
+
+    if (score === 0) {
+        computerPoints++;
+    }
+
+    else if (score === 1) {
+        playerPoints++;
+    }
+
+    else if (score === 3) {
+        counter--;
+    }
+
+    // Output of the ROUND, player and computer points.
+    roundOutput.textContent = "ROUND: " + counter;
+    outputPlayerPoints.textContent = "Player Points: " + playerPoints;
+    outputComputerPoints.textContent = "Computer Points: " + computerPoints;
+    output.appendChild(roundOutput);
+    output.appendChild(outputPlayerPoints);
+    output.appendChild(outputComputerPoints);
+
+    counter++;
+
+    if ( counter === 6 ) {
+
+        const playAgain = document.querySelector("#play-again");
+        const playAgainButton = document.querySelector("#play-again-button");
+        oneGameOutput.style.display = "none";
+
+        playerChoice.forEach((button) => {
+            button.classList.add("hide-buttons");
+        });
+
+        playAgain.style.display = "block";
+        playAgainButton.addEventListener('click', () => {
+
+            refreshPage();
+        });
+
+        if (playerPoints > computerPoints) {
+            gameOutput.innerHTML = '<h1 class="final-output">Victory!</h1>\n A lesson that you can take from this game: Taking chances are woth it!\n Here you go, one hint: You can influence the AI Choice ;]]';
+        }
+
+        else if(playerPoints < computerPoints) {
+            gameOutput.innerHTML = '<h1 class="final-output">Defeat!</h1>\n Defeat should motivate you! \n If you win you will be rewarded ;]';
+        }
+
+        else if(playerPoints === computerPoints) {
+            gameOutput.textContent = "It's a tie, try one more time :)";
+        }
+        
+        counter = 1;
+        playerPoints = 0;
+        computerPoints = 0;
+    }
+}
+
+// Results of each round, return the output text of current round.
+let playRound = (playerSelection, computerSelection) => {
+    
+    let playerInput = playerSelection;
+    let r = "Rock";
+    let p = "Paper";
+    let s = "Scissors";
+
+    if (playerInput === computerSelection) {
+        oneGameOutput.textContent = "It's a tie";
+        return 3;
+    }
+
+    if (playerInput === r.toLowerCase() && computerSelection === p.toLowerCase()) {
+        oneGameOutput.textContent = "You lose! " + p + " beats " + r;
+        return 0;
+    }
+
+    if (playerInput === r.toLowerCase() && computerSelection === s.toLowerCase()) {
+        oneGameOutput.textContent = "You winnnn! " + r + " beats " + s;
+        return 1;
+    }
+
+    if (playerInput === p.toLowerCase() && computerSelection === r.toLowerCase()) {
+        oneGameOutput.textContent = "You win! " + p + " Beats " + r;
+        return 1;
+    }
+
+    if (playerInput === p.toLowerCase() && computerSelection === s.toLowerCase()) {
+        oneGameOutput.textContent = "You lose! " + s + " beat " + p;
+        return 0;
+    }
+
+    if (playerInput === s.toLowerCase() && computerSelection === r.toLowerCase()) {
+        oneGameOutput.textContent = "You lose! " + r + " beats " + s;
+        return 0;
+    }
+
+    if (playerInput === s.toLowerCase() && computerSelection === p.toLowerCase()) {
+        oneGameOutput.textContent = "You win! " + s + " beats " + p;
+        return 1;
+    }
+} 
+
+// Generate computer choice
 function getComputerChoice () {
 
     let r = "rock";
@@ -8,138 +125,59 @@ function getComputerChoice () {
     let s = "scissors";
     
     let choice = [r, p, s];
-    
+    const computerChoice = document.querySelector("#computer-choice");
+    let capitalLetterChoice = choice;
     num = Math.floor(Math.random() * choice.length);
 
-    console.log(choice[num]);
+    computerChoice.textContent = "AI Choice: " + capitalLetterChoice[num]
+    .charAt(0).toUpperCase() + capitalLetterChoice[num].slice(1);
+
+    computerChoice.addEventListener('click', () => {
+        getComputerChoice();
+    });
 
     return choice[num];
-}
+};
 
-// Play one round and return the winner 
+const computerChoice = document.querySelector("#computer-choice");
+computerChoice.textContent = "AI Choice"
+roundOutput.textContent = "ROUND";
+outputPlayerPoints.textContent = "Player Points";
+outputComputerPoints.textContent = "Computer Points";
 
-let playRound = (playerSelection, computerSelection) => {
-    
+//Refreshing the page.
+function refreshPage() {
 
-    let playerInput = playerSelection.toLowerCase();
-    let r = "Rock";
-    let p = "Paper";
-    let s = "Scissors";
-    let niz = [r, p, s];
-    let output = document.getElementById("output");
+    window.location.reload(true);
+};
 
-    for (let i=0; i < niz.length; i++) {
+//Showing hidden element:
+function toggleContent() {
 
-        if (playerInput == niz[i].toLowerCase() && computerSelection == niz[i].toLowerCase()) {
+    let content = document.querySelector("#content");
 
-            output.innerHTML = "It's a tie";
-            return 3;
-        }
-
-        if (playerInput === niz[0].toLowerCase() && computerSelection === niz[i].toLowerCase()) {
-
-            if(computerSelection === niz[1].toLowerCase()){
-
-                output.innerHTML = "You lose! " + p + " beats " + r;
-                return 0;
-            }
-
-            if (computerSelection === niz[2].toLowerCase()) {
-
-                output.innerHTML = "You winnnn! " + r + " beats " + s;
-                return 1;
-            }
-
-        }
-
-        if (playerInput === niz[1].toLowerCase() && computerSelection === niz[i].toLowerCase()) {
-
-            if (computerSelection === niz[0].toLowerCase()) {
-
-                output.innerHTML = "You win! " + p + " Beats " + r;
-                return 1;
-            }
-
-            if (computerSelection === niz[2].toLowerCase()) { 
-
-                output.innerHTML = "You lose! " + s + " beat " + p;
-                return 0;
-            }
-        }
-
-        if (playerInput === niz[2].toLowerCase() && computerSelection === niz[i].toLowerCase()) {
-
-            if (computerSelection === niz[0].toLowerCase()) {
-
-                output.innerHTML = "You lose! " + r + " beats " + s;
-                return 0;
-            }
-
-            if (computerSelection === niz[1].toLowerCase()) {
-
-                output.innerHTML = "You win! " + s + " beats " + p;
-                return 1;
-            }
-        }
+    if (content.style.display === "none" ) {
+        content.style.display = "block";
     }
-} 
+};
 
-// Play 5 round game, and return winner or loser at the end.
+const play = document.querySelector(".play-button");
+const welcomeText = document.querySelector("#welcome-text");
+let content = document.querySelector("#content");
 
-let playerPoints = 0;
-let computerPoints = 0;
-let counter = 0;
+play.addEventListener('click', () => {
 
-function game() {
+    content.style.display = "block";
 
-    let playerSelection = document.getElementById("input").value;
+    welcomeText.style.display = "none";
+    play.style.display = "none";
+});
 
-    for (let i = 0; i < 5; i++) {
+//Add Event Listener to player choice buttons, and send their id value as an argument!
+playerChoice.forEach((button) => {
 
-        let computerSelection = getComputerChoice();
-        let score = playRound(playerSelection, computerSelection);
-
-        if (score === 0) {
-
-            computerPoints++;
-        }
-
-        else if (score === 1) {
-
-            playerPoints++;
-
-        }
-        else if (score === 3) {
-
-        }
-
-        console.log("ROUND: " + i);
-        console.log("player Points\n" + playerPoints);
-        console.log("computer Points\n" + computerPoints);
-
-        counter++;
-
-        console.log("counter : " + counter);
-        console.log("----------------");
-    }
-        
-    if ( counter === 5 ) {
-
-        if (playerPoints > computerPoints) {
-
-            console.log("Victory!");
-            console.log("Player points " + playerPoints);
-        }
-
-        else if(playerPoints < computerPoints) {
-
-            console.log("Defeat!");
-            console.log("Computer points " + computerPoints);
-        }
-
-        else if(playerPoints === computerPoints) {
-            console.log("It's a tie, try one more time :)")
-        }
-    }
-
-}
+    button.addEventListener('click', () => {
+        game(button.id);
+        toggleContent();
+    });
+});
